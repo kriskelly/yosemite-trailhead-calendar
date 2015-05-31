@@ -1,0 +1,19 @@
+{
+  "name": "yosemite-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kris Kelly",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.27",
+    "fs-extra": "^0.18.4",
+    "lodash-fp": "^0.9.0",
+    "pdf2json": "^0.7.1",
+    "request": "^2.56.0",
+    "urlencode": "^1.0.0"
+  }
+}
