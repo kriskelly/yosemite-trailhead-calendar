@@ -3,7 +3,8 @@ var Promise = require('bluebird'),
     request = Promise.promisify(require('request')),
     PDFParser = require('pdf2json/pdfparser'),
     urlencode = require('urlencode'),
-    _ = require('lodash-fp');
+    _ = require('lodash-fp'),
+    moment = require('moment');
 
 Promise.promisifyAll(fs);
 
@@ -117,6 +118,10 @@ var formatDate = _.curry(function(year, month, day) {
   return [month, day, year].join('/');
 });
 
+var removeInvalidDates = _.filter(function(date) {
+  return moment(new Date(date)).isValid();
+});
+
 var convertToDates = _.map(function(trailhead) {
   var toDates = _.flow(
     _.pairs,
@@ -125,7 +130,8 @@ var convertToDates = _.map(function(trailhead) {
       var month = pair[0];
       return _.map(formatDate(currentYear, month), days);
     }),
-    _.flatten
+    _.flatten,
+    removeInvalidDates
   );
   trailhead.dates = toDates(trailhead.months);
   delete trailhead.months;
