@@ -7,13 +7,19 @@ require("fullcalendar/dist/fullcalendar.css");
 
 
 module.exports = React.createClass({
-    displayName: 'Calendar',
-    componentDidMount: function() {
-      var node = React.findDOMNode(this.refs.cal);
-      $(node).fullCalendar();
-    },
+  propTypes: {
+    events: React.PropTypes.array.isRequired
+  },
 
-    render: function(){
-        return <div ref="cal"></div>
-    }
+  displayName: 'Calendar',
+  componentDidUpdate: function() {
+    var node = React.findDOMNode(this.refs.cal);
+    $(node).fullCalendar({
+      events: this.props.events
+    });
+  },
+
+  render: function(){
+    return <div ref="cal"></div>
+  }
 })

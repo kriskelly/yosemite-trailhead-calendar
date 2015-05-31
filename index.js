@@ -108,7 +108,7 @@ var groupByTrailhead = _.reduce(function(acc, str) {
 // Convert lists of full dates -> lists of non-full dates.
 var invertDates = _.map(function(trailhead) {
   trailhead.months = _.mapValues(function(days) {
-    return _.difference(_.range(1, 31), days);
+    return _.difference(_.range(1, 32), days);
   }, trailhead.months);
   return trailhead;
 });
