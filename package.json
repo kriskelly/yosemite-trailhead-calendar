@@ -10,10 +10,18 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.27",
+    "css-loader": "^0.14.4",
     "fs-extra": "^0.18.4",
+    "fullcalendar": "^2.3.1",
     "lodash-fp": "^0.9.0",
+    "node-static": "^0.7.6",
     "pdf2json": "^0.7.1",
+    "react": "^0.13.3",
     "request": "^2.56.0",
+    "style-loader": "^0.12.3",
     "urlencode": "^1.0.0"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.13.2"
   }
 }

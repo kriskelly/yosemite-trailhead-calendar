@@ -9,7 +9,8 @@ Promise.promisifyAll(fs);
 
 var pdfUrl = 'http://www.nps.gov/yose/planyourvisit/upload/fulltrailheads.pdf';
 
-var localFilePath = './fulltrailheads.pdf';
+var localPdfPath = './fulltrailheads.pdf';
+var localJsonPath = './public/available-trailheads.json';
 
 // var makeRequest = function() {
 //   return request({
@@ -19,10 +20,15 @@ var localFilePath = './fulltrailheads.pdf';
 // }
 
 var makeRequest = function() {
-  return fs.readFileAsync(localFilePath).then(function(data) {
+  return fs.readFileAsync(localPdfPath).then(function(data) {
     return [null, data];
   });
 }
+
+var dumpAndLeave = function(output) {
+  console.log(output);
+  process.exit();
+};
 
 var parsePdf = function(buf) {
   var parser = new PDFParser();
@@ -107,10 +113,24 @@ var invertDates = _.map(function(trailhead) {
   return trailhead;
 });
 
-var dumpAndLeave = function(output) {
-  console.log(output);
-  process.exit();
-};
+var formatDate = _.curry(function(year, month, day) {
+  return [month, day, year].join('/');
+});
+
+var convertToDates = _.map(function(trailhead) {
+  var toDates = _.flow(
+    _.pairs,
+    _.map(function(pair) {
+      var days = pair[1];
+      var month = pair[0];
+      return _.map(formatDate(currentYear, month), days);
+    }),
+    _.flatten
+  );
+  trailhead.dates = toDates(trailhead.months);
+  delete trailhead.months;
+  return trailhead;
+});
 
 var extractFromPages = _.flow(
   extractStrings,
@@ -120,11 +140,15 @@ var extractFromPages = _.flow(
   groupByTrailhead,
   function(acc) { return _.result('trailheads', acc); }, // No idea why this works but _.result('trailheads') does not.
   invertDates, // list includes full dates, find empty dates.
-  dumpAndLeave
+  convertToDates
 );
 
 makeRequest().spread(function(response, body) {
   return parsePdf(body);
 }).then(function(doc) {
   return doc.data.Pages; 
-}).then(extractFromPages);
+}).then(extractFromPages).then(function(trailheads) {
+  return fs.writeFileAsync(localJsonPath, JSON.stringify(trailheads));
+}).then(function() {
+  console.log('successfully wrote JSON');
+});
