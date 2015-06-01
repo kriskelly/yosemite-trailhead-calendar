@@ -106,11 +106,37 @@ var groupByTrailhead = _.reduce(function(acc, str) {
   return acc;
 }, accumulator);
 
+var daysPerMonth = {
+  5: 31,
+  6: 30,
+  7: 31,
+  8: 31,
+  9: 30,
+  10: 31
+};
+
+// Can't get _.zipObject to work for some reason.
+var zipObject = _.reduce(function(acc, pair) {
+  return _.spread(function(k, v) {
+    acc[k] = v;
+    return acc;
+  })(pair);
+}, {});
+
 // Convert lists of full dates -> lists of non-full dates.
 var invertDates = _.map(function(trailhead) {
-  trailhead.months = _.mapValues(function(days) {
-    return _.difference(_.range(1, 32), days);
-  }, trailhead.months);
+  var doInversion = _.flow(
+    _.pairs,
+    _.map(function(pair) {
+      var month = pair[0];
+      var days = pair[1];
+      var remainingDays = _.difference(_.range(1, daysPerMonth[month] + 1), days);
+      return [month, remainingDays];
+    }),
+    zipObject
+  );
+
+  trailhead.months = doInversion(trailhead.months);
   return trailhead;
 });
 
