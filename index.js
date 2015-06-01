@@ -144,7 +144,7 @@ var extractFromPages = _.flow(
   _.map(_.trim),
   cleanData,
   groupByTrailhead,
-  function(acc) { return _.result('trailheads', acc); }, // No idea why this works but _.result('trailheads') does not.
+  _.property('trailheads'),
   invertDates, // list includes full dates, find empty dates.
   convertToDates
 );
