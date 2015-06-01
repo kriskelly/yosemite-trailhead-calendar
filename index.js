@@ -13,18 +13,18 @@ var pdfUrl = 'http://www.nps.gov/yose/planyourvisit/upload/fulltrailheads.pdf';
 var localPdfPath = './fulltrailheads.pdf';
 var localJsonPath = './public/available-trailheads.json';
 
-// var makeRequest = function() {
-//   return request({
-//     url: pdfUrl,
-//     encoding: null
-//   });
-// }
-
 var makeRequest = function() {
-  return fs.readFileAsync(localPdfPath).then(function(data) {
-    return [null, data];
+  return request({
+    url: pdfUrl,
+    encoding: null
   });
 }
+
+// var makeRequest = function() {
+//   return fs.readFileAsync(localPdfPath).then(function(data) {
+//     return [null, data];
+//   });
+// }
 
 var dumpAndLeave = function(output) {
   console.log(output);
