@@ -1,5 +1,9 @@
 /** @jsx React.DOM */
 'use strict'
+
+// Bootstrap CSS loaded via Webpack
+require('bootstrap/dist/css/bootstrap.css');
+
 var React = require('react');
 var Calendar = require('./Calendar');
 var $ = require('jquery');
