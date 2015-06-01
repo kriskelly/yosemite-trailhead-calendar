@@ -16,5 +16,11 @@ module.exports = {
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
+    },
+    externals: {
+        'react': 'React',
+        'fullcalendar': '$.fullCalendar',
+        'moment': 'moment',
+        'jquery': 'jQuery'
     }
 };

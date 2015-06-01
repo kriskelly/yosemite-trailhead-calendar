@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 'use strict'
 var React = require('react')
-var calendar = require('fullcalendar/dist/fullcalendar');
-var $ = require('fullcalendar/node_modules/jquery');
+var calendar = require('fullcalendar');
+var $ = require('jquery');
 require("fullcalendar/dist/fullcalendar.css");
 
 
