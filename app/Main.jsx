@@ -2,7 +2,7 @@
 'use strict'
 var React = require('react');
 var Calendar = require('./Calendar');
-var $ = require('fullcalendar/node_modules/jquery');
+var $ = require('jquery');
 var _ = require('lodash-fp');
 var moment = require('moment');
 
