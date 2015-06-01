@@ -15,19 +15,20 @@ var skipOldDates = _.filter(function(date) {
   return momentDate.isAfter(today);
 });
 
+var createEvent = _.curry(function(title, date) {
+  return {
+    title: title,
+    start: date,
+    allDay: true
+  };
+});
+
 // Convert list of trailheads w/ dates to calendar events
 var calendarEvents = _.flow(
   _.map(function(trailhead) {
-    var createEvent = function(date) {
-      return {
-        title: trailhead.name,
-        start: date,
-        allDay: true
-      };
-    }
     var processDates = _.flow(
       skipOldDates,
-      _.map(createEvent)
+      _.map(createEvent(trailhead.name))
     );
 
     return processDates(trailhead.dates);
