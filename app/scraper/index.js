@@ -4,14 +4,12 @@ var Promise = require('bluebird'),
     PDFParser = require('pdf2json/pdfparser'),
     urlencode = require('urlencode'),
     _ = require('lodash-fp'),
-    moment = require('moment');
+    moment = require('moment'),
+    memoize = require('memoizee');;
 
 Promise.promisifyAll(fs);
 
 var pdfUrl = 'http://www.nps.gov/yose/planyourvisit/upload/fulltrailheads.pdf';
-
-var localPdfPath = './fulltrailheads.pdf';
-var localJsonPath = './public/available-trailheads.json';
 
 var makeRequest = function() {
   return request({
@@ -20,6 +18,7 @@ var makeRequest = function() {
   });
 }
 
+// var localPdfPath = './fulltrailheads.pdf';
 // var makeRequest = function() {
 //   return fs.readFileAsync(localPdfPath).then(function(data) {
 //     return [null, data];
@@ -187,12 +186,17 @@ var extractFromPages = _.flow(
   convertToDates
 );
 
-makeRequest().spread(function(response, body) {
-  return parsePdf(body);
-}).then(function(doc) {
-  return doc.data.Pages; 
-}).then(extractFromPages).then(function(trailheads) {
-  return fs.writeFileAsync(localJsonPath, JSON.stringify(trailheads));
-}).then(function() {
-  console.log('successfully wrote JSON');
-});
+// Returns a promise that resolves to an array of trailheads.
+function scrape() {
+  return makeRequest().spread(function(response, body) {
+    return parsePdf(body);
+  }).then(function(doc) {
+    return doc.data.Pages;
+  }).then(extractFromPages).then(function(trailheads) {
+    console.log('successfully scraped trailhead data');
+    return trailheads;
+  });
+}
+
+var expirationTime = 24 * 60 * 60 * 1000; // 1 day in ms
+module.exports = memoize(scrape, {maxAge: expirationTime});
