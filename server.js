@@ -1,12 +1,12 @@
 var static = require('node-static');
-var scraper = require('./app/scraper');
+var scrapePdf = require('./app/scraper');
 
 var file = new static.Server('./public');
 
 require('http').createServer(function (request, response) {
   request.addListener('end', function () {
     if (/available\-trailheads\.json/.test(request.url)) {
-      scraper().then(function(trailheads) {
+      scrapePdf().then(function(trailheads) {
         response.writeHead(200, {"Content-Type": "application/json"});
         response.write(JSON.stringify(trailheads));
         response.end();
