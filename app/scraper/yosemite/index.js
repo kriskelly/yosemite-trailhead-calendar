@@ -1,6 +1,6 @@
 var ingest = require('./ingest.js'),
-    transform = require('./transform.js'),
-    memoize = require('memoizee');
+    transform = require('./transform.js');
+
 
 var dumpAndLeave = function(output) {
   console.log(output);
@@ -17,5 +17,4 @@ function scrape() {
   });
 }
 
-var expirationTime = 24 * 60 * 60 * 1000; // 1 day in ms
-module.exports = memoize(scrape, {maxAge: expirationTime});
+module.exports = scrape;

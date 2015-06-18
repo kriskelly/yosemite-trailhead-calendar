@@ -1,6 +1,9 @@
 var urlencode = require('urlencode'),
     _ = require('lodash-fp'),
-    moment = require('moment');
+    moment = require('moment'),
+    util = require('../util'),
+    remainingDays = util.remainingDays,
+    monthToInt = util.monthToInt;
 
 var extractStrings = _.flow(_.flatten, _.map(function(page) {
   return _.map(function(text) {
@@ -25,19 +28,6 @@ var cleanData = _.filter(function(str) {
 
 var extractDay = _.parseInt(10);
 
-var availableMonths = {
-  'May': 5,
-  'June': 6,
-  'July': 7,
-  'August': 8,
-  'September': 9,
-  'October': 10
-};
-
-var extractMonth = function(str) {
-  return availableMonths[str];
-};
-
 // Input = Array of strings
 // Output = Array of objects, 1 for each trailhead
 var accumulator = {
@@ -50,7 +40,7 @@ var currentYear = 2015;
 
 var groupByTrailhead = _.reduce(function(acc, str) {
   var day, month;
-  if (month = extractMonth(str)) {
+  if (month = monthToInt(str)) {
     acc.currentMonth = month;
     acc.currentTrailhead.months[month] = [];
   } else if (day = extractDay(str)) {
@@ -89,19 +79,6 @@ var mapValues = function(iteratee) {
     mapSpread(iteratee),
     zipObject
   );
-};
-
-var daysPerMonth = {
-  5: 31,
-  6: 30,
-  7: 31,
-  8: 31,
-  9: 30,
-  10: 31
-};
-
-var remainingDays = function(month, days) {
-  return _.difference(_.range(1, daysPerMonth[month] + 1), days)
 };
 
 // Convert lists of full dates -> lists of non-full dates.
