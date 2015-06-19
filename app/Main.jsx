@@ -6,6 +6,7 @@ require('bootstrap/dist/css/bootstrap.css');
 
 var React = require('react');
 var Calendar = require('./Calendar');
+var Loader = require('./Loader');
 var $ = require('jquery');
 var _ = require('lodash-fp');
 var moment = require('moment');
@@ -45,7 +46,8 @@ module.exports = React.createClass({
 
   getInitialState: function() {
     return {
-      trailheads: []
+      trailheads: [],
+      loading: true
     };
   },
 
@@ -53,14 +55,26 @@ module.exports = React.createClass({
     $.ajax({
       url: '/available-trailheads.json',
       success: function(data) {
-        this.setState({trailheads: data});
+        this.setState({trailheads: data, loading: false});
+      },
+      error: function() {
+        console.log('an error happened!');
       },
       context: this
     });
   },
 
   render: function(){
-
-    return <div><Calendar events={calendarEvents(this.state.trailheads)} /></div>
+    var display;
+    if (!!this.state.loading) {
+      display = <Loader />;
+    } else {
+      display = <Calendar events={calendarEvents(this.state.trailheads)} />;
+    }
+    return (
+      <div>
+        {display}
+      </div>
+    );
   }
 })

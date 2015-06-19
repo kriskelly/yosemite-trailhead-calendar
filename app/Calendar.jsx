@@ -12,7 +12,7 @@ module.exports = React.createClass({
   },
 
   displayName: 'Calendar',
-  componentDidUpdate: function() {
+  componentDidMount: function() {
     var node = React.findDOMNode(this.refs.cal);
     $(node).fullCalendar({
       events: this.props.events
