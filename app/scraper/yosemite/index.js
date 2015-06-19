@@ -1,6 +1,6 @@
-var ingest = require('./ingest.js'),
-    transform = require('./transform.js');
-
+var transform = require('./transform.js'),
+    download = require('./download'),
+    parse = require('./parse');
 
 var dumpAndLeave = function(output) {
   console.log(output);
@@ -9,9 +9,10 @@ var dumpAndLeave = function(output) {
 
 // Returns a promise that resolves to an array of trailheads.
 function scrape() {
-  return ingest().then(function(doc) {
-    return doc.data.Pages;
-  }).then(transform).then(function(trailheads) {
+  return download()
+    .then(parse)
+    .then(transform)
+    .then(function(trailheads) {
     console.log('successfully scraped trailhead data');
     return trailheads;
   });

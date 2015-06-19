@@ -5,13 +5,19 @@ var urlencode = require('urlencode'),
     remainingDays = util.remainingDays,
     monthToInt = util.monthToInt;
 
-var extractStrings = _.flow(_.flatten, _.map(function(page) {
-  return _.map(function(text) {
-    return urlencode.decode(text.R[0].T);
-  }, page.Texts);
-}), _.flatten);
+var debug = function(out) {
+  console.log(out);
+  process.exit();
+  return out;
+};
 
-var extractTrailheadData = _.takeWhile(_.negate(_.includes('Donohue Exit Quota')));
+var extractStrings = _.flow(
+  _.map(_.property('Texts')),
+  _.map(_.map(function(text) {
+    return urlencode.decode(text.R[0].T);
+  })), // Map all the PDF pages to an array of arrays of strings
+  _.reject(_.any(_.includes('Donohue Exit Quota'))), // Reject any 'Donahue Exit Quota' pages b/c they mess up the transformer.
+  _.flatten);
 
 var garbageStrings = [
   'WPS Full Trailheads Report',
@@ -116,7 +122,6 @@ var convertToDates = _.map(function(trailhead) {
 
 var transform = _.flow(
   extractStrings,
-  extractTrailheadData,
   _.map(_.trim),
   cleanData,
   groupByTrailhead,
