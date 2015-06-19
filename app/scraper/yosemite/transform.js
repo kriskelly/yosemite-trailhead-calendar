@@ -5,12 +5,6 @@ var urlencode = require('urlencode'),
     remainingDays = util.remainingDays,
     monthToInt = util.monthToInt;
 
-var debug = function(out) {
-  console.log(out);
-  process.exit();
-  return out;
-};
-
 var extractStrings = _.flow(
   _.map(_.property('Texts')),
   _.map(_.map(function(text) {

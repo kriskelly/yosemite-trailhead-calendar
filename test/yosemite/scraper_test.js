@@ -3,8 +3,9 @@ var scrapePdf = require('../../app/scraper/yosemite'),
 
 describe('scraper', function() {
   it('works', function(done) {
-    scrapePdf().then(function(pages) {
-      expect(pages).to.be.instanceOf(Array);
+    scrapePdf().then(function(trailheads) {
+      expect(trailheads).to.be.instanceOf(Array);
+      expect(trailheads).to.have.length.above(0);
     }).then(done);
   });
 });

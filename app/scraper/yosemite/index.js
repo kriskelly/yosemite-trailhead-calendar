@@ -1,5 +1,5 @@
 var transform = require('./transform.js'),
-    download = require('./download'),
+    download = require('../download'),
     parse = require('./parse');
 
 var dumpAndLeave = function(output) {
@@ -9,7 +9,7 @@ var dumpAndLeave = function(output) {
 
 // Returns a promise that resolves to an array of trailheads.
 function scrape() {
-  return download()
+  return download('http://www.nps.gov/yose/planyourvisit/upload/fulltrailheads.pdf')
     .then(parse)
     .then(transform)
     .then(function(trailheads) {
