@@ -46,16 +46,19 @@ var groupByTrailhead = _.reduce(function(acc, str) {
   } else if (day = extractDay(str)) {
     acc.currentTrailhead.months[acc.currentMonth].push(day);
   } else {
-    // Is a trailhead.
-    var trailhead = {
-      name: str,
-      months: {}
-    };
+    // Is a trailhead. It might be a new one or an existing trailhead.
+    var trailhead;
+    if (!(trailhead = _.find({name: str}, acc.trailheads))) {
+      trailhead = {
+        name: str,
+        months: {}
+      };
+      acc.trailheads.push(trailhead);
+    }
     acc.currentTrailhead = trailhead;
-    acc.trailheads.push(trailhead);
   }
   return acc;
-}, accumulator);
+}, _.create(accumulator));
 
 // Can't get _.zipObject to work for some reason.
 var zipObject = _.reduce(function(acc, pair) {
@@ -108,10 +111,10 @@ var toFormattedDates = _.flow(
 );
 
 var convertToDates = _.map(function(trailhead) {
-  trailhead.dates = toFormattedDates(trailhead.months);
-  // console.log(trailhead.dates);process.exit();
-  delete trailhead.months;
-  return trailhead;
+  return {
+    name: trailhead.name,
+    dates: toFormattedDates(trailhead.months)
+  };
 });
 
 var transform = _.flow(
