@@ -1,15 +1,5 @@
 var R = require('ramda');
 
-function extractTableText(parsedHTML) {
-  return parsedHTML('table table').text();
-}
-
-function splitLines(text) {
-  return text.split("\n");
-}
-
-let trimWhitespace = R.map(x => x.trim());
-
 let dropEmptyLines = R.reject(x => x.length === 0);
 
 let stripInitialNonsense = R.pipe(R.dropWhile(x => x !== 'Campground List'), R.drop(1));
@@ -53,9 +43,6 @@ function campgroundFsm() {
 let removeDuplicates = R.uniqWith((a, b) => a.name === b.name);
 
 module.exports = R.pipe(
-  extractTableText,
-  splitLines,
-  trimWhitespace,
   dropEmptyLines,
   stripInitialNonsense,
   campgroundFsm(),

@@ -7,5 +7,5 @@ var download = require('../download'),
     transform = require('./transform');
 
 module.exports = function() {
-  return download(campgroundsUrl).then(parse).then(transform);
+  return download(campgroundsUrl).then(parse('table table')).then(transform);
 };

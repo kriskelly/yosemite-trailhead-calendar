@@ -1,5 +1,3 @@
-require("babel/register");
-
 var parseHtml = require('../../app/scraper/parse_html'),
     transform = require('../../app/scraper/eldorado/transform'),
     expect = require('chai').expect,
@@ -13,7 +11,7 @@ describe('eldorado transform', function() {
   });
   
   it('works on the HTML file', function() {
-    var campgrounds = transform(parseHtml(this.buf));
+    var campgrounds = transform(parseHtml('table table', this.buf));
     expect(campgrounds).to.be.instanceof(Array);
     expect(campgrounds).to.have.length.above(0);
   });
