@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-'use strict'
+'use strict';
 var React = require('react')
 var calendar = require('fullcalendar');
 var $ = require('jquery');

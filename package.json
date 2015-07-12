@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --content-base public/",
     "test": "mocha --compilers js:babel/register",
     "build": "webpack",
     "build-commit": "webpack && git add public/ && git ci -m 'Update build'",
     "deploy": "git push heroku",
-    "test-all": "mocha --compilers js:babel/register --recursive test/"
+    "test-all": "mocha --compilers js:babel/register --recursive test/",
+    "watch": "webpack --watch"
   },
   "author": "Kris Kelly",
   "license": "MIT",
@@ -28,6 +28,7 @@
     "pdf2json": "^0.7.1",
     "ramda": "^0.15.1",
     "react": "^0.13.3",
+    "react-bootstrap": "^0.23.7",
     "request": "^2.56.0",
     "style-loader": "^0.12.3",
     "urlencode": "^1.0.0"
