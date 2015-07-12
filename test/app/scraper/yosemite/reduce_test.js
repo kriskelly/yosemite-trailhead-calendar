@@ -3,7 +3,7 @@ var expect = require('chai').expect,
     _ = require('lodash-fp');
 
 describe('yosemite reduce strings to list of trailheads', function() {
-  it('combines split trailhead names', function(done) {
+  it('combines split trailhead names', function() {
     var strs = [
       'Foobar Trail',
       'June',
@@ -16,6 +16,6 @@ describe('yosemite reduce strings to list of trailheads', function() {
 
     var trailheads = reduceTrailheads(strs);
     expect(trailheads).to.have.length.of(2);
-    expect(_.map(_property('name'), trailheads)).to.include('Lukens Lake');
+    expect(_.map(_.property('name'), trailheads)).to.include('Lukens Lake');
   });
 });
