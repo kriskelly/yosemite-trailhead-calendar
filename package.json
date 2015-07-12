@@ -7,6 +7,7 @@
     "dev": "webpack-dev-server --content-base public/",
     "test": "mocha --compilers js:babel/register",
     "build": "webpack",
+    "build-commit": "webpack && git add public/ && git ci -m 'Update build'",
     "deploy": "git push heroku",
     "test-all": "mocha --compilers js:babel/register --recursive test/"
   },
