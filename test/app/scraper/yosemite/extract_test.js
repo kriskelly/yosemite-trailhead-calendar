@@ -1,5 +1,5 @@
-var parse = require('../../app/scraper/yosemite/parse'),
-    extract = require('../../app/scraper/yosemite/extract'),
+var parse = require('../../../../app/scraper/yosemite/parse'),
+    extract = require('../../../../app/scraper/yosemite/extract'),
     expect = require('chai').expect,
     fs = require('fs'),
     _ = require('lodash-fp');
@@ -7,6 +7,8 @@ var parse = require('../../app/scraper/yosemite/parse'),
 var pdfPath = __dirname + '/fixtures/fulltrailheads.pdf';
 
 describe('yosemite extract strings from PDF', function() {
+  this.timeout(3000);
+
   beforeEach(function() {
     this.buf = fs.readFileSync(pdfPath);
   });

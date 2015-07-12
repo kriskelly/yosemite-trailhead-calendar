@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register"
+    "dev": "webpack-dev-server --content-base public/",
+    "test": "mocha --compilers js:babel/register",
+    "test-all": "mocha --compilers js:babel/register --recursive test/"
   },
   "author": "Kris Kelly",
   "license": "MIT",

@@ -1,5 +1,5 @@
 module.exports = {
-    entry: "./app/index.jsx",
+    entry: "./app/web/yosemite/index.jsx",
     output: {
         path: __dirname + '/public',
         filename: "bundle.js"

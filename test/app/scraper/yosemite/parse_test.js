@@ -1,4 +1,4 @@
-var parse = require('../../app/scraper/yosemite/parse'),
+var parse = require('../../../../app/scraper/yosemite/parse'),
     expect = require('chai').expect,
     fs = require('fs');
 

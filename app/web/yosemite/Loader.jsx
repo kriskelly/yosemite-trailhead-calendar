@@ -1,6 +1,6 @@
 var React = require('react');
 
-require('../assets/loader.css');
+require('../../../assets/loader.css');
 
 module.exports = React.createClass({
   displayName: 'Loader',

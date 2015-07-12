@@ -1,4 +1,4 @@
-var scrape = require('../../app/scraper/eldorado'),
+var scrape = require('../../../../app/scraper/eldorado'),
     expect = require('chai').expect;
 
 describe('eldorado scraper', function() {

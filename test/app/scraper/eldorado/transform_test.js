@@ -1,5 +1,5 @@
-var parseHtml = require('../../app/scraper/parse_html'),
-    transform = require('../../app/scraper/eldorado/transform'),
+var parseHtml = require('../../../../app/scraper/parse_html'),
+    transform = require('../../../../app/scraper/eldorado/transform'),
     expect = require('chai').expect,
     fs = require('fs');
 

@@ -1,5 +1,5 @@
-var parse = require('../../app/scraper/yosemite/parse'),
-    transform = require('../../app/scraper/yosemite/transform'),
+var parse = require('../../../../app/scraper/yosemite/parse'),
+    transform = require('../../../../app/scraper/yosemite/transform'),
     expect = require('chai').expect,
     fs = require('fs'),
     _ = require('lodash-fp');

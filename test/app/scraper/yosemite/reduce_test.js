@@ -1,5 +1,5 @@
 var expect = require('chai').expect,
-    reduceTrailheads = require('../../app/scraper/yosemite/reduce'),
+    reduceTrailheads = require('../../../../app/scraper/yosemite/reduce'),
     _ = require('lodash-fp');
 
 describe('yosemite reduce strings to list of trailheads', function() {
