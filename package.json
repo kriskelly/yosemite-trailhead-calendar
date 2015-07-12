@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base public/",
     "test": "mocha --compilers js:babel/register",
+    "build": "webpack",
+    "deploy": "git push heroku",
     "test-all": "mocha --compilers js:babel/register --recursive test/"
   },
   "author": "Kris Kelly",
