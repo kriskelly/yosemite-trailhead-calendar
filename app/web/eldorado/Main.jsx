@@ -1,8 +1,21 @@
 /** @jsx React.DOM */
 'use strict';
-var React = require('react');
+var React = require('react'),
+    Table = require('reactable').Table;
 
 module.exports = React.createClass({
+
+  getDefaultProps: function() {
+    return {
+      columns: [
+        {key: 'name', label: 'Name'},
+        {key: 'takesReservations', label: 'Reservable'},
+        {key: 'siteCount', label: '# Sites'},
+        {key: 'elevation', label: 'Elevation (ft)'},
+        {key: 'cost', label: 'Cost per day'},
+      ]
+    }
+  },
 
   getInitialState: function() {
     return {
@@ -25,6 +38,9 @@ module.exports = React.createClass({
   },
 
   render: function(){
-    return <div>{this.state.campgrounds}</div>;
+    return <Table className='table'
+                  columns={this.props.columns}
+                  data={this.state.campgrounds}
+                  sortable={true} />;
   }
 })
