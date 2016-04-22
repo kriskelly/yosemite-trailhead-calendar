@@ -1,12 +1,12 @@
 var _ = require('lodash-fp');
 
 var daysPerMonth = {
-  5: 31,
-  6: 30,
-  7: 31,
-  8: 31,
-  9: 30,
-  10: 31
+  'May': 31,
+  'June': 30,
+  'July': 31,
+  'August': 31,
+  'September': 30,
+  'October': 31
 };
 
 var remainingDays = function(month, days) {
@@ -14,6 +14,7 @@ var remainingDays = function(month, days) {
 };
 
 var availableMonths = {
+  'April': 4,
   'May': 5,
   'June': 6,
   'July': 7,

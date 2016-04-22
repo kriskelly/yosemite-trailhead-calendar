@@ -3,9 +3,10 @@ var _ = require('lodash-fp'),
     extractStrings = require('./extract'),
     reduceTrailheads = require('./reduce'),
     util = require('../util'),
+    monthToInt = util.monthToInt,
     remainingDays = util.remainingDays;
     
-var currentYear = 2015;
+var currentYear = (new Date()).getFullYear();
 
 // Can't get _.zipObject to work for some reason.
 var zipObject = _.reduce(function(acc, pair) {
@@ -42,7 +43,7 @@ var invertDates = _.map(function(trailhead) {
 });
 
 var formatDate = _.curry(function(year, month, day) {
-  return [month, day, year].join('/');
+  return [monthToInt(month), day, year].join('/');
 });
 
 var removeInvalidDates = _.filter(function(date) {

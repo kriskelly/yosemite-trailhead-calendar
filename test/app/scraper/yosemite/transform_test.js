@@ -7,20 +7,27 @@ var parse = require('../../../../app/scraper/yosemite/parse'),
 var pdfPath = __dirname + '/fixtures/fulltrailheads.pdf';
 
 describe('yosemite transform', function() {
+  var trailheads;
+
   beforeEach(function() {
     this.buf = fs.readFileSync(pdfPath);
+    return parse(this.buf).then(transform).then(function (results) {
+      trailheads = results;
+    })
   });
 
-  it('works on the PDF', function(done) {
-    parse(this.buf).then(transform).then(function(trailheads) {
-      expect(trailheads).to.be.instanceof(Array);
-    }).then(done);
+  it('works on the PDF', function() {
+    expect(trailheads).to.be.instanceof(Array);
   });
 
-  it('does not output duplicate trailheads', function(done) {
-    parse(this.buf).then(transform).then(function(trailheads) {
-      var uniqueNames = _.uniq(_.map(_.property('name'), trailheads));
-      expect(uniqueNames.length).to.equal(trailheads.length);
-    }).then(done);
+  it('does not output duplicate trailheads', function() {
+    var uniqueNames = _.uniq(_.map(_.property('name'), trailheads));
+    expect(uniqueNames.length).to.equal(trailheads.length);
+  });
+
+  it('outputs trailheads populated with the available dates', function () {
+    var trailhead = trailheads[0];
+    expect(trailhead.name).to.equal('Beehive Meadows');
+    expect(trailhead.dates.length).to.be.greaterThan(0);
   });
 });

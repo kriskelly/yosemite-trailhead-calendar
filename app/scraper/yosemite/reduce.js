@@ -2,51 +2,60 @@
 
 var _ = require('lodash-fp'),
     util = require('../util'),
-    monthToInt = util.monthToInt;
+    monthToInt = util.monthToInt,
+    trailheadList = require('./all_trailheads');
 
 var extractDay = _.parseInt(10);
 
-var groupByTrailhead = function(arr) {
-  // Input = Array of strings
-  // Output = Array of objects, 1 for each trailhead
-  var accumulator = {
-    trailheads: [],
-    currentTrailhead: {},
-    currentMonth: null,
-    previous: null
-  };
+var TOKEN_TYPES = {
+  TRAILHEAD_NAME: 0,
+  DATE_LIST: 1,
+  MONTH_NAME: 2
+};
 
-  return _.reduce(function(acc, str) {
-    var day, month, trailhead;
-    if (month = monthToInt(str)) {
-      acc.currentMonth = month;
-      acc.currentTrailhead.months[month] = [];
-      acc.previous = 'month';
-    } else if (day = extractDay(str)) {
-      acc.currentTrailhead.months[acc.currentMonth].push(day);
-      acc.previous = 'day';
-    } else {
-      // Is a trailhead. It might be a new one or an existing trailhead.
-      if (!(trailhead = _.find({name: str}, acc.trailheads))) {
-        if (acc.previous === 'trailhead') {
-          acc.currentTrailhead.name += ' ' + str;
-        } else {
-          trailhead = {
-            name: str,
-            months: {}
-          };
-          acc.trailheads.push(trailhead);
-          acc.currentTrailhead = trailhead;
+function parseTrailheads(tokens) {
+  var trailheads = [];
+  var day, month, currentTrailhead;
+
+  _.each(function (token) {
+    var token = tokens.shift();
+    var tokenType = getTokenType(token);
+    switch(tokenType) {
+      case TOKEN_TYPES.TRAILHEAD_NAME: {
+        if (!currentTrailhead || currentTrailhead.name !== token) {
+          currentTrailhead = { name: token, months: {}};
+          trailheads.push(currentTrailhead);
         }
+        break;
       }
-      acc.previous = 'trailhead';
-      acc.currentMonth = null;
+      case TOKEN_TYPES.MONTH_NAME: {
+        month = [];
+        currentTrailhead.months[token] = month;
+        break;
+      }
+      case TOKEN_TYPES.DATE_LIST: {
+        var cleanDateList = _.reject(function (day) { return !day; }, token.split(' '));
+        var days = _.map(extractDay, cleanDateList);
+        Array.prototype.push.apply(month, days); // Concat in place
+        break;
+      }
+      default: {
+        throw "Unknown token type for: " + token;
+      }
     }
-    return acc;
-  }, accumulator, arr);
+  }, tokens);
+
+  return trailheads;
 }
 
-module.exports = _.flow(
-  groupByTrailhead,
-  _.property('trailheads')
-);
+function getTokenType(token) {
+  if (trailheadList.indexOf(token) > -1) {
+    return TOKEN_TYPES.TRAILHEAD_NAME;
+  } else if (monthToInt(token)) {
+    return TOKEN_TYPES.MONTH_NAME;
+  } else if (/\d/.test(token[0])) { // Fragile: check if 1st char is a digit
+    return TOKEN_TYPES.DATE_LIST;
+  }
+}
+
+module.exports = parseTrailheads;
