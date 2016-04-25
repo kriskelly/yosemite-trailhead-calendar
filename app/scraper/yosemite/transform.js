@@ -8,14 +8,6 @@ var _ = require('lodash-fp'),
     
 var currentYear = (new Date()).getFullYear();
 
-// Can't get _.zipObject to work for some reason.
-var zipObject = _.reduce(function(acc, pair) {
-  return _.spread(function(k, v) {
-    acc[k] = v;
-    return acc;
-  })(pair);
-}, {});
-
 var mapSpread = function(iteratee) {
   return _.flow(
     _.pairs,
@@ -23,19 +15,15 @@ var mapSpread = function(iteratee) {
   );
 };
 
-// Also not sure why _.mapValues does not seem to be working.
-// This is not quite a replacement for _.mapValues.
-var mapValues = function(iteratee) {
-  return _.flow(
-    mapSpread(iteratee),
-    zipObject
-  );
-};
-
 // Convert lists of full dates -> lists of non-full dates.
-var doInversion = mapValues(function(month, days) {
-  return [month, remainingDays(month, days)];
-});
+function doInversion (monthData) {
+  var invertedDates = {};
+  _.each(function (days, month) {
+    invertedDates[month] = remainingDays(month, days);
+  }, monthData);
+
+  return invertedDates;
+}
 
 var invertDates = _.map(function(trailhead) {
   trailhead.months = doInversion(trailhead.months);
@@ -65,11 +53,12 @@ var convertToDates = _.map(function(trailhead) {
   };
 });
 
-var transform = _.flow(
-  extractStrings,
-  reduceTrailheads,
-  invertDates, // list includes full dates, find non-full dates.
-  convertToDates
-);
+function transform (pdfData) {
+  var strings = extractStrings(pdfData);
+  var trailheads = reduceTrailheads(strings);
+  var invertedTrailheadData = invertDates(trailheads);
+  var trailheadsWithDates = convertToDates(invertedTrailheadData);
+  return trailheadsWithDates;
+}
 
 module.exports = transform;

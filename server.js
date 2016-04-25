@@ -1,18 +1,18 @@
 var static = require('node-static'),
     yosemiteScraper = require('./app/scraper/yosemite'),
-    eldoradoScraper = require('./app/scraper/eldorado'),
+    // eldoradoScraper = require('./app/scraper/eldorado'),
     memoize = require('memoizee'),
     R = require('ramda');
 
 var expirationTime = 24 * 60 * 60 * 1000; // 1 day in ms
 var memoizedYosemiteScraper = memoize(yosemiteScraper, {maxAge: expirationTime});
-var memoizedEldoradoScraper = memoize(eldoradoScraper, {maxAge: expirationTime});
+// var memoizedEldoradoScraper = memoize(eldoradoScraper, {maxAge: expirationTime});
 
 var file = new static.Server('./public');
 
 var endpoints = [
-  [/available\-trailheads\.json/, memoizedYosemiteScraper],
-  [/eldorado\-campgrounds\.json/, memoizedEldoradoScraper]
+  [/available\-trailheads\.json/, memoizedYosemiteScraper]
+  // [/eldorado\-campgrounds\.json/, memoizedEldoradoScraper]
 ];
 
 

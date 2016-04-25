@@ -30,4 +30,19 @@ describe('yosemite transform', function() {
     expect(trailhead.name).to.equal('Beehive Meadows');
     expect(trailhead.dates.length).to.be.greaterThan(0);
   });
+
+  it('outputs trailhead data for the week of May 16 - 20', function () {
+    var trailhead = trailheads[0]; // The PDF has that week free for this trailhead.
+    var mayDates = _.filter(function (date) { return _.startsWith('5', date); }, trailhead.dates);
+    var expectedDates = [
+      '5/16/2016',
+      '5/17/2016',
+      '5/18/2016',
+      '5/19/2016',
+      '5/20/2016'
+    ];
+    _.each(function (date) {
+      expect(_.includes(date, mayDates)).to.be.true;
+    }, expectedDates);
+  });
 });
