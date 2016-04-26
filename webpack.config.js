@@ -1,4 +1,5 @@
 module.exports = {
+    devtool: 'source-map',
     entry: "./app/web/index.jsx",
     output: {
         path: __dirname + '/public',
@@ -23,7 +24,6 @@ module.exports = {
     },
     externals: {
         'react': 'React',
-        'fullcalendar': '$.fullCalendar',
         'moment': 'moment',
         'jquery': 'jQuery'
     }

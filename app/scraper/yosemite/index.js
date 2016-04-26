@@ -1,21 +1,33 @@
 var transform = require('./transform.js'),
-    download = require('../download'),
     parse = require('./parse');
+var fetchCached = require('./fetch-cached');
 
-var dumpAndLeave = function(output) {
-  console.log(output);
-  process.exit();
-};
+var CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 1 day in ms
 
-// Returns a promise that resolves to an array of trailheads.
-function scrape() {
-  return download('http://www.nps.gov/yose/planyourvisit/upload/fulltrailheads.pdf')
-    .then(parse)
-    .then(transform)
-    .then(function(trailheads) {
-    console.log('successfully scraped trailhead data');
-    return trailheads;
+var calendarize = require('./calendarize');
+
+
+/**
+ * 
+ * Options are the following:
+ * - maxAge: maxAge param used by memoizee
+ * - search: search terms used to filter calendar results
+ * 
+ * @param options
+ * @returns {Promise.<TResult>} Promise A promise that resolves calendar events to display on the web
+ */
+function createScraper(options) {
+  var cachedFetcher = fetchCached({
+    maxAge: CACHE_EXPIRATION_TIME
   });
+
+  function scrape() {
+    return cachedFetcher()
+      .then(parse)
+      .then(transform)
+      .then(calendarize);
+  }
+  return scrape;
 }
 
-module.exports = scrape;
+module.exports = createScraper;

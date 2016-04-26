@@ -1,25 +1,32 @@
 /** @jsx React.DOM */
 'use strict';
 var React = require('react')
-var calendar = require('fullcalendar');
+require('fullcalendar');
 var $ = require('jquery');
 require("fullcalendar/dist/fullcalendar.css");
-
+var _ = require('lodash-fp');
 
 module.exports = React.createClass({
-  propTypes: {
-    events: React.PropTypes.array.isRequired
+  displayName: 'Calendar',
+
+  componentDidMount: function() {
+    this.updateEvents();
   },
 
-  displayName: 'Calendar',
-  componentDidMount: function() {
-    var node = React.findDOMNode(this.refs.cal);
-    $(node).fullCalendar({
-      events: this.props.events
+  updateEvents: function () {
+    var node = $(React.findDOMNode(this.refs.cal));
+    node.fullCalendar({
+      events: {
+        url: '/yosemite-calendar-events.json'
+      }
     });
   },
 
   render: function(){
-    return <div ref="cal"></div>
+    return (
+      <div>
+        <div className="calendar" ref="cal"></div>
+      </div>
+    );
   }
-})
+});

@@ -11,7 +11,6 @@ module.exports = React.createClass({
     return (
       <TabbedArea defaultActiveKey={1}>
         <TabPane eventKey={1} tab='Yosemite Trailheads'><Yosemite /></TabPane>
-        <TabPane eventKey={2} tab='Eldorado Campgrounds'><Eldorado /></TabPane>
       </TabbedArea>
     );
   }
