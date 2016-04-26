@@ -8,9 +8,26 @@ var SearchBar = require('./SearchBar.jsx');
 module.exports = React.createClass({
   displayName: 'SearchableCalendar',
 
+  getInitialState: function () {
+    return {
+      searchQuery: ''
+    };
+  },
+
+  searchEvents: function (searchQuery) {
+    this.setState({ searchQuery: searchQuery });
+  },
+
   render: function(){
     return (
-      <Calendar />
+      <div>
+        <div className="row">
+          <SearchBar onSubmitSearch={this.searchEvents} />
+        </div>
+        <div className="row">
+          <Calendar searchQuery={this.state.searchQuery} />
+        </div>
+      </div>
     );
   }
 });

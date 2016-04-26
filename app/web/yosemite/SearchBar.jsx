@@ -26,10 +26,19 @@ module.exports = React.createClass({
 
   render: function(){
     return (
-      <form onSubmit={this.submitSearch}>
-        <input type="text" name="searchterms" onChange={this.trackSearchTerms} />
-        <input type="submit" value="Search" />
-      </form>
+      <div className="col-md-12 search-bar navbar-form">
+        <form className="form-inline" onSubmit={this.submitSearch}>
+          <div className="form-group">
+            <input type="text"
+                   className="form-control"
+                   name="searchterms"
+                   onChange={this.trackSearchTerms}
+                   placeholder="Trailhead name..."
+            />
+          </div>
+          <button type="submit" value="Search" className="btn btn-primary"><span className="glyphicon glyphicon-search"></span></button>
+        </form>
+      </div>
     );
   }
 });

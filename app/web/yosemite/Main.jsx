@@ -1,8 +1,8 @@
 /** @jsx React.DOM */
 'use strict';
 
-// Bootstrap CSS loaded via Webpack
-require('bootstrap/dist/css/bootstrap.css');
+// Bootswatch Flatly CSS loaded via Webpack
+require('../../../assets/css/bootstrap.css');
 
 var React = require('react');
 var Loader = require('./Loader');
@@ -12,7 +12,9 @@ module.exports = React.createClass({
 
   render: function(){
     return (
-      <SearchableCalendar />
+      <div className="container">
+        <SearchableCalendar />
+      </div>
     );
   }
 })
