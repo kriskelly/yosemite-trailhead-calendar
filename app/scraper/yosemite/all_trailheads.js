@@ -21,6 +21,7 @@ module.exports = [
   'May Lake',
   'May Lake->Snow Creek',
   'McGurk  Meadow', // FIXME: Account for double spaces between trailhead names
+  'Miguel Meadow',
   'Mirror Lake->Snow Creek',
   'Mono Meadow',
   'Mono/Parker Pass',
