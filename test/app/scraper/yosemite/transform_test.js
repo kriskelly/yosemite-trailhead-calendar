@@ -45,4 +45,10 @@ describe('yosemite transform', function() {
       expect(_.includes(date, mayDates)).to.be.true;
     }, expectedDates);
   });
+
+  it('outputs trailhead data for months that are not listed in the PDF (no full dates for that month', function () {
+    var trailhead = trailheads[0]; // The PDF has that week free for this trailhead.
+    var juneDates = _.filter(function (date) { return _.startsWith('6', date); }, trailhead.dates);
+    expect(juneDates.length).to.be.greaterThan(0);
+  });
 });

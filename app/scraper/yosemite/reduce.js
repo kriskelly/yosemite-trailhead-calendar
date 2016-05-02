@@ -23,7 +23,15 @@ function parseTrailheads(tokens) {
     switch(tokenType) {
       case TOKEN_TYPES.TRAILHEAD_NAME: {
         if (!currentTrailhead || currentTrailhead.name !== token) {
-          currentTrailhead = { name: token, months: {}};
+          currentTrailhead = { name: token, months: {
+            'April': [],
+            'May': [],
+            'June': [],
+            'July': [],
+            'August': [],
+            'September': [],
+            'October': []
+          }};
           trailheads.push(currentTrailhead);
         }
         break;
